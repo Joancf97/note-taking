@@ -6,7 +6,7 @@ const getNotes = function () {
 }
 
 // Add a note to the array of lists
-const addNote = function (title, body) {
+const addNote =  (title, body) => {
   // Get all the existing notes
   const notes = loadNotes();
   // Validate that the title doesnt exist yet
@@ -19,6 +19,7 @@ const addNote = function (title, body) {
       title: title, 
       body: body
     });
+    console.log(chalk.green("Note Added!"));
   } else { 
     console.log("Note already exist");
   }
@@ -26,7 +27,7 @@ const addNote = function (title, body) {
   saveNotes(notes);
 }
 
-const removeNote = function(title){ 
+const removeNote = (title) => { 
   // Get all the existing notes
   const notes =  loadNotes();
   notes.forEach((element, index, object) => {
@@ -40,13 +41,13 @@ const removeNote = function(title){
 }
 
 // Save a the json array of notes into the file
-const saveNotes = function(notes){
+const saveNotes = (notes) => {
   const dataJSON = JSON.stringify(notes);
   fs.writeFileSync('notes.json', dataJSON);
 }
 
 // Loads all the notes from the notes.json file
-const loadNotes =  function () {
+const loadNotes =  () => {
   try {
     const dataBufer = fs.readFileSync('notes.json');
     const dataJSON = dataBufer.toString();
