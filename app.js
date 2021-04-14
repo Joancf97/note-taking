@@ -1,4 +1,5 @@
 const notes = require('./utils.js');
+const chalk = require('chalk');
 const yargs = require('yargs');   //Yargs parses the command line parameters
 
 // working with arguments in command line
@@ -46,19 +47,35 @@ yargs.command({
 
 // List command
 yargs.command({
-  command: 'read',
+  command: 'list',
   describe: 'Reading a note',
   handler: function () {
-    console.log("reading a note");
+    console.log(chalk.blue("Your notes:"));
+    notes.listNotes().forEach((element, index) => {
+      console.log(`${index+1}. ${element.title}`);
+    });
   }
 });
 
 // Delete command
 yargs.command({
-  command: 'delete',
-  describe: 'deleting a note',
-  handler: function () {
-    console.log("delet a note");
+  command: 'read',
+  describe: 'Reading just one note',
+  builder:{ 
+    title: { 
+      require: true, 
+      describe: "Title of the note to read",
+      type: 'string'
+    }
+  },
+  handler(argv) {
+    const note = notes.findNote(argv.title);
+    if(note){
+      console.log(chalk.green('Your note:'));
+      console.log(chalk.green(note.body));
+    } else {
+      console.log(chalk.red('Note not found!'));
+    }
   }
 });
 

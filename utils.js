@@ -1,20 +1,14 @@
 const fs = require('fs');
 const chalk = require('chalk');
 
-const getNotes = function () {
-  return 'Yout notes...';
-}
-
 // Add a note to the array of lists
 const addNote =  (title, body) => {
   // Get all the existing notes
   const notes = loadNotes();
   // Validate that the title doesnt exist yet
-  const existing = notes.filter(elm => {
-    return elm.title === title;
-  })
+  const existing = notes.find(note => note.title === title);
   // Add the new one
-  if(existing.length == 0){
+  if(!existing){ 
     notes.push({
       title: title, 
       body: body
@@ -40,6 +34,17 @@ const removeNote = (title) => {
   saveNotes(notes);
 }
 
+
+// Finde note 
+const findNote = (title) => {
+  const notes = loadNotes();
+  return notes.find(elm => {
+    if(elm.title === title){
+      return elm;
+    }
+  });
+}
+
 // Save a the json array of notes into the file
 const saveNotes = (notes) => {
   const dataJSON = JSON.stringify(notes);
@@ -60,6 +65,7 @@ const loadNotes =  () => {
 // Export the funtions
 module.exports = {
   'addNote': addNote,
-  'getNotes': getNotes,
-  'removeNote': removeNote
+  'removeNote': removeNote,
+  'listNotes': loadNotes,
+  'findNote': findNote
 }
